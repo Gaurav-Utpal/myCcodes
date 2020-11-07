@@ -1,0 +1,229 @@
+#include<stdio.h>
+#include<conio.h>
+#include<string.h>
+#include<stdlib.h>
+#include<ctype.h>
+
+void functionIntro()
+{
+    printf(" -------------GOPALAN MALL-----------------");
+}
+
+int functionCustomerType()
+{
+    int validCustomerType=0, returnCustomerType;
+    char customerType[100];
+
+    while(validCustomerType==0)
+    {
+        printf("\n Is the customer Regular or Special (R/S)? ");
+        scanf("%s", &customerType[0]);
+
+		if((strcmp(customerType,"R")==0 || strcmp(customerType,"S")==0) && strlen(customerType)==1)
+			validCustomerType = 1;
+		else
+			printf(" ----Not a valid entry");
+    } 
+	
+	returnCustomerType = customerType[0];
+    return returnCustomerType;
+}
+
+struct ShoppingCart
+{
+	int productId, productQty, productRate;
+};
+
+void functionDisplayBill(int totalNoOfProducts, int customerType, struct ShoppingCart itemDescription[50])
+{
+	int totalAmt=0, costAfterDiscount, eachProductCost, eachProductDiscount=0;
+	
+	system("cls");
+	functionIntro();
+
+	printf("\n PRODUCT ID \t\t RATE \t\t QTY \t\t DISCOUNT \t\t COST");
+
+	while(totalNoOfProducts != 0)
+	{
+		eachProductCost = (itemDescription[totalNoOfProducts].productRate)*(itemDescription[totalNoOfProducts].productQty);
+		
+		if(customerType==83)
+			eachProductDiscount = eachProductCost/10;
+			
+		costAfterDiscount = eachProductCost - eachProductDiscount;
+		printf("\n %d \t\t\t %d \t\t %d \t\t %d \t\t\t %d",itemDescription[totalNoOfProducts].productId,itemDescription[totalNoOfProducts].productRate,itemDescription[totalNoOfProducts].productQty, eachProductDiscount, costAfterDiscount);
+		
+		totalAmt = totalAmt + costAfterDiscount;
+		totalNoOfProducts--;
+	}
+	printf("\n \t\t\t\t\t\t\t\t\t TOTAL : Rs.%d",totalAmt);
+	
+	if(customerType==83 && totalAmt>1000)
+	{
+		totalAmt = (totalAmt*95)/100;
+		printf("\n YAY! You are our Special Customer and have received extra 5%% DISCOUNT!!!");
+	}
+		
+	printf("\n AMOUNT TO PAY: Rs.%d",totalAmt);
+	printf("\n As our gratitude, we do not consider Paise in out bill, you saved some extra!");
+	
+	printf("\n\n ---------------------------------------------------------------------------");
+	printf("\n\n\n");
+}
+
+int enterProductId()
+{
+	int correctEntry = 0, i, x, someProblem=0, returnProductId;
+	char productId[100];
+	while(correctEntry!=1)
+	{
+		printf("\n Enter Product ID: ");
+		scanf("%s",&productId);
+		
+		someProblem=0;
+		
+		if(strlen(productId)!=5)
+		{
+			printf(" \t --> Length of product id is always 5");
+			someProblem = 1;
+		}
+		
+		for(i=0; i<strlen(productId); i++)
+			if (isdigit(productId[i])==0)
+				someProblem=2;
+				
+		if(someProblem==2)
+			printf(" \t --> Product id is a positive number");
+			
+		returnProductId = atoi(productId);
+		if(returnProductId==0)
+		{
+			printf(" \t --> Product id can not be 0");
+			someProblem = 1;
+		}
+		
+		if(someProblem==0)
+			correctEntry = 1;
+	}
+	
+	return returnProductId;
+}
+
+int enterProductRate()
+{
+	int correctEntry = 0, i, x, someProblem=0, returnProductRate;
+	char productRate[100];
+	while(correctEntry!=1)
+	{
+		printf("\n Enter Rate of Item: ");
+		scanf("%s",&productRate);
+		
+		someProblem=0;
+		
+		if(strlen(productRate)>5)
+		{
+			printf(" \t --> We do not sell that much costly item");
+			someProblem = 1;
+		}
+		
+		for(i=0; i<strlen(productRate); i++)
+			if (isdigit(productRate[i])==0)
+				someProblem=2;
+				
+		if(someProblem==2)
+			printf(" \t --> Product rate is a positive number");
+			
+		returnProductRate = atoi(productRate);
+		if(returnProductRate <= 10 && someProblem!=2)
+		{
+			printf(" \t --> Product rate can not be less than 10");
+			someProblem = 1;
+		}
+		
+		if(someProblem==0)
+			correctEntry = 1;
+	}
+	
+	return returnProductRate;
+}
+
+int enterProductQty()
+{
+	int correctEntry = 0, i, x, someProblem=0, returnProductQty;
+	char productQty[100];
+	while(correctEntry!=1)
+	{
+		printf("\n Enter quantity: ");
+		scanf("%s",&productQty);
+		
+		someProblem=0;
+		
+		if(strlen(productQty)>2)
+		{
+			printf(" \t --> We do not sell more than 99 pieces");
+			someProblem = 1;
+		}
+		
+		for(i=0; i<strlen(productQty); i++)
+			if (isdigit(productQty[i])==0)
+				someProblem=2;
+				
+		if(someProblem==2)
+			printf(" \t --> Product quantity is a positive number");
+			
+		returnProductQty = atoi(productQty);
+		if(returnProductQty <= 1 && someProblem!=2 && someProblem!=1)
+		{
+			printf(" \t --> Product quantity can not be less than 1");
+			someProblem = 1;
+		}
+		
+		if(someProblem==0)
+			correctEntry = 1;
+	}
+	
+	return returnProductQty;
+}
+
+
+void functionProductInfo(int customerType)
+{
+	int correctEntry, totalNoOfProducts=0;
+	char continueShopping[100]="y";
+	struct ShoppingCart itemDescription[50];
+	
+	while(strcmp(continueShopping,"y")==0 || strcmp(continueShopping,"Y")==0)
+	{
+		functionDisplayBill(totalNoOfProducts, customerType, itemDescription);
+		totalNoOfProducts++;
+		
+		itemDescription[totalNoOfProducts].productId = enterProductId();
+
+		itemDescription[totalNoOfProducts].productRate = enterProductRate();
+
+		itemDescription[totalNoOfProducts].productQty = enterProductQty();
+
+		correctEntry = 0;
+		while(correctEntry!=1)
+		{
+			printf("\n Are there more Items? (y/n): ");
+			scanf("%s",&continueShopping);
+			
+			if((strcmp(continueShopping,"y")==0 || strcmp(continueShopping,"Y")==0 || strcmp(continueShopping,"n")==0 || strcmp(continueShopping,"N")==0) && strlen(continueShopping)==1)
+				correctEntry = 1;
+			else
+				correctEntry = 0;
+		}
+	}
+	functionDisplayBill(totalNoOfProducts, customerType, itemDescription);
+}
+
+
+int main()
+{
+    int customerType;
+
+    functionIntro();
+	customerType = functionCustomerType();
+	functionProductInfo(customerType);
+}
