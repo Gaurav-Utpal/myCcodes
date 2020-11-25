@@ -4,22 +4,24 @@
 #include<stdlib.h>
 #include<ctype.h>
 
+//Function to print name or intro of the mall
 void functionIntro()
 {
     printf(" -------------GOPALAN MALL-----------------");
 }
 
-int functionCustomerType()
+//Function to check if customer is Regular R,r OR Special S,s
+int functionCustomerType()	
 {
     int validCustomerType=0, returnCustomerType;
     char customerType[100];
-
     while(validCustomerType==0)
     {
+		
         printf("\n Is the customer Regular or Special (R/S)? ");
         scanf("%s", &customerType[0]);
 
-		if((strcmp(customerType,"R")==0 || strcmp(customerType,"S")==0) && strlen(customerType)==1)
+		if((strcmp(customerType,"R")==0 || strcmp(customerType,"S")==0 || (strcmp(customerType,"r")==0 || strcmp(customerType,"s")==0) && strlen(customerType)==1)
 			validCustomerType = 1;
 		else
 			printf(" ----Not a valid entry");
@@ -29,11 +31,13 @@ int functionCustomerType()
     return returnCustomerType;
 }
 
+//Structure for storing bill information
 struct ShoppingCart
 {
 	int productId, productQty, productRate;
 };
 
+//Function to display bill on screen
 void functionDisplayBill(int totalNoOfProducts, int customerType, struct ShoppingCart itemDescription[50])
 {
 	int totalAmt=0, costAfterDiscount, eachProductCost, eachProductDiscount=0;
@@ -71,6 +75,7 @@ void functionDisplayBill(int totalNoOfProducts, int customerType, struct Shoppin
 	printf("\n\n\n");
 }
 
+//Taking Product id as inupt and validating
 int enterProductId()
 {
 	int correctEntry = 0, i, x, someProblem=0, returnProductId;
@@ -93,10 +98,10 @@ int enterProductId()
 				someProblem=2;
 				
 		if(someProblem==2)
-			printf(" \t --> Product id is a positive number");
+			printf(" \t --> Product id is a positive integer");
 			
 		returnProductId = atoi(productId);
-		if(returnProductId==0)
+		if(returnProductId==0 && someProblem==0)
 		{
 			printf(" \t --> Product id can not be 0");
 			someProblem = 1;
@@ -109,6 +114,7 @@ int enterProductId()
 	return returnProductId;
 }
 
+//Taking Product rate as inupt and validating
 int enterProductRate()
 {
 	int correctEntry = 0, i, x, someProblem=0, returnProductRate;
@@ -122,7 +128,7 @@ int enterProductRate()
 		
 		if(strlen(productRate)>5)
 		{
-			printf(" \t --> We do not sell that much costly item");
+			printf(" \t --> Enter a valid integer");
 			someProblem = 1;
 		}
 		
@@ -147,6 +153,7 @@ int enterProductRate()
 	return returnProductRate;
 }
 
+//Taking Product quantity as input and validating
 int enterProductQty()
 {
 	int correctEntry = 0, i, x, someProblem=0, returnProductQty;
@@ -185,7 +192,8 @@ int enterProductQty()
 	return returnProductQty;
 }
 
-
+//Function to check if customer need more items
+//And all product related functions are called from this function
 void functionProductInfo(int customerType)
 {
 	int correctEntry, totalNoOfProducts=0;
@@ -218,7 +226,7 @@ void functionProductInfo(int customerType)
 	functionDisplayBill(totalNoOfProducts, customerType, itemDescription);
 }
 
-
+//main function to start the program
 int main()
 {
     int customerType;
