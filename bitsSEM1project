@@ -21,7 +21,7 @@ int functionCustomerType()
         printf("\n Is the customer Regular or Special (R/S)? ");
         scanf("%s", &customerType[0]);
 
-		if((strcmp(customerType,"R")==0 || strcmp(customerType,"S")==0 || (strcmp(customerType,"r")==0 || strcmp(customerType,"s")==0) && strlen(customerType)==1)
+		if((strcmp(customerType,"R")==0 || strcmp(customerType,"S")==0 || (strcmp(customerType,"r")==0 || strcmp(customerType,"s")==0) && strlen(customerType)==1))
 			validCustomerType = 1;
 		else
 			printf(" ----Not a valid entry");
@@ -51,7 +51,7 @@ void functionDisplayBill(int totalNoOfProducts, int customerType, struct Shoppin
 	{
 		eachProductCost = (itemDescription[totalNoOfProducts].productRate)*(itemDescription[totalNoOfProducts].productQty);
 		
-		if(customerType==83)
+		if(customerType==83 || customerType==115)										//Checking if customer is special or not using ascii value of S,s
 			eachProductDiscount = eachProductCost/10;
 			
 		costAfterDiscount = eachProductCost - eachProductDiscount;
@@ -62,7 +62,7 @@ void functionDisplayBill(int totalNoOfProducts, int customerType, struct Shoppin
 	}
 	printf("\n \t\t\t\t\t\t\t\t\t TOTAL : Rs.%d",totalAmt);
 	
-	if(customerType==83 && totalAmt>1000)
+	if((customerType==83 || customerType==115) && totalAmt>1000)						//Checking if customer is special or not using ascii value of S,s
 	{
 		totalAmt = (totalAmt*95)/100;
 		printf("\n YAY! You are our Special Customer and have received extra 5%% DISCOUNT!!!");
@@ -111,7 +111,7 @@ int enterProductId()
 			correctEntry = 1;
 	}
 	
-	return returnProductId;
+	return returnProductId;											// Returning validated product id
 }
 
 //Taking Product rate as inupt and validating
@@ -150,7 +150,7 @@ int enterProductRate()
 			correctEntry = 1;
 	}
 	
-	return returnProductRate;
+	return returnProductRate;											// Returning validated product rate
 }
 
 //Taking Product quantity as input and validating
@@ -189,7 +189,7 @@ int enterProductQty()
 			correctEntry = 1;
 	}
 	
-	return returnProductQty;
+	return returnProductQty;											// Returning validated product quantity
 }
 
 //Function to check if customer need more items
@@ -200,7 +200,7 @@ void functionProductInfo(int customerType)
 	char continueShopping[100]="y";
 	struct ShoppingCart itemDescription[50];
 	
-	while(strcmp(continueShopping,"y")==0 || strcmp(continueShopping,"Y")==0)
+	while(strcmp(continueShopping,"y")==0 || strcmp(continueShopping,"Y")==0)     //If customer wants to continue shopping or not
 	{
 		functionDisplayBill(totalNoOfProducts, customerType, itemDescription);
 		totalNoOfProducts++;
@@ -212,7 +212,7 @@ void functionProductInfo(int customerType)
 		itemDescription[totalNoOfProducts].productQty = enterProductQty();
 
 		correctEntry = 0;
-		while(correctEntry!=1)
+		while(correctEntry!=1)													// Validating correct entry if customer wants to continue shopping
 		{
 			printf("\n Are there more Items? (y/n): ");
 			scanf("%s",&continueShopping);
